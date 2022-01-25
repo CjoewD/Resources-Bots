@@ -402,7 +402,7 @@ try {
     if(!types.includes(value)) throw new Error('Invalid Pokemon Type: '+ value);
   });
   types.forEach( type => {
-    const val = chart[type][typeOne] * (chart[type][typeTwo] || 1);
+    const val = chart[type][typeOne] * (chart[type][typeTwo] == undefined ? 1 : chart[type][typeTwo]);
     const formatedType = formatType(type);
 
     if(val === 0) { weaknesses['immune'].push(formatedType) }
