@@ -390,7 +390,7 @@ const types = [
 ];
 
 const formatType = (type) => ' ' + type.charAt(0).toUpperCase() + type.slice(1);
-const weaknesses = { 4: [], 2: [], 0.5: [], 0.25: [], 0: [] };
+const weaknesses = { '4': [], '2': [], '0.5': [], '0.25': [], '0': [] };
 
 try {
   if (!typing) throw new Error('Give valid typing. Examples: \'fighting\' or \'steel/dragon\'.');
@@ -406,15 +406,15 @@ try {
     const val = chart[type][typeOne] * (typeTwo ? chart[type][typeTwo] : 1);
     const formatedType = formatType(type);
 
-    if(val != 1) { weaknesses[val].push(formatedType) }
+    if(val != 1) { weaknesses[val.toString()].push(formatedType) }
   });
 
   const noneString = ' --';
-  const output = 'Super Weak:' + (weaknesses[4].length ? weaknesses[4] : noneString) + ' | '
-    + 'Weak:' + (weaknesses[2].length ? weaknesses[2] : noneString) + ' | '
-    + 'Resists:' + (weaknesses[0.5].length ? weaknesses[0.5] : noneString) + ' | '
-    + 'Super Resists:' + (weaknesses[0.25].length ? weaknesses[0.25] : noneString) + ' | '
-    + 'Immune:' + (weaknesses[0].length ? weaknesses[0] : noneString);
+  const output = 'Super Weak:' + (weaknesses['4'].length ? weaknesses['4'] : noneString) + ' | '
+    + 'Weak:' + (weaknesses['2'].length ? weaknesses['2'] : noneString) + ' | '
+    + 'Resists:' + (weaknesses['0.5'].length ? weaknesses['0.5'] : noneString) + ' | '
+    + 'Super Resists:' + (weaknesses['0.25'].length ? weaknesses['0.25'] : noneString) + ' | '
+    + 'Immune:' + (weaknesses['0'].length ? weaknesses['0'] : noneString);
 
   output;
 } catch(e) {
