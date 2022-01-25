@@ -392,7 +392,7 @@ const formatType = (type) => ' ' + type.charAt(0).toUpperCase() + type.slice(1);
 const weaknesses = { 'weak': [], 'weak+': [], 'resist': [], 'resist+': [], 'immune': [] };
 
 try {
-  if (!typing) throw new Error('Give valid typings. Examples: \'fighting\' or \'steel/dragon\'.');
+  if (!typing) throw new Error('Give valid typing. Examples: \'fighting\' or \'steel/dragon\'.');
   const parsedInput = typing.toLowerCase().replaceAll('%2f', '/').split('/');
   if (parsedInput.length > 2) throw new Error('Too many typings!');
   const typeOne = parsedInput[0];
