@@ -1,8 +1,9 @@
 /* INPUT <string> typing -- format of 'type' or 'type/type'
 *  OUTPUT <string> -- the typings weakness chart
+*
 *  example: > 'steel/ghost'
-*  < 'Super Weak: none! | Weak: Fire, Fighting, Ground | Resists: Normal, Grass, Ice,
-*    Flying, Psychic, Rock, Dragon, Steel, Fairy | Super Resists: Bug | Immune: Poison'
+*  < 'Super Weak: -- | Weak: Fire, Ground | Resists: Grass, Ice, Flying, Psychic, Rock,
+*     Dragon, Steel, Fairy | Super Resists: Bug | Immune: Normal, Fighting, Poison'
 */
 
 const chart = {
@@ -389,35 +390,31 @@ const types = [
 ];
 
 const formatType = (type) => ' ' + type.charAt(0).toUpperCase() + type.slice(1);
-const weaknesses = { 'weak': [], 'weak+': [], 'resist': [], 'resist+': [], 'immune': [] };
+const weaknesses = { 4: [], 2: [], 0.5: [], 0.25: [], 0: [] };
 
 try {
   if (!typing) throw new Error('Give valid typing. Examples: \'fighting\' or \'steel/dragon\'.');
   const parsedInput = typing.toLowerCase().replaceAll('%2f', '/').split('/');
   if (parsedInput.length > 2) throw new Error('Too many typings!');
   const typeOne = parsedInput[0];
-  const typeTwo = parsedInput.length >= 2 ? parsedInput[1] : 'null';
+  const typeTwo = parsedInput.length >= 2 ? parsedInput[1] : null;
   if (typeOne === typeTwo) throw new Error('Pokemon can\'t be dual type, of the same type!');
   parsedInput.forEach( value => {
     if(!types.includes(value)) throw new Error('Invalid Pokemon Type: '+ value);
   });
   types.forEach( type => {
-    const val = chart[type][typeOne] * (chart[type][typeTwo] == undefined ? 1 : chart[type][typeTwo]);
+    const val = chart[type][typeOne] * (typeTwo ? chart[type][typeTwo] : 1);
     const formatedType = formatType(type);
 
-    if(val === 0) { weaknesses['immune'].push(formatedType) }
-    else if(val === .25) { weaknesses['resist+'].push(formatedType) }
-    else if(val === .5) { weaknesses['resist'].push(formatedType) }
-    else if(val === 2) { weaknesses['weak'].push(formatedType) }
-    else if(val === 4) { weaknesses['weak+'].push(formatedType) }
+    if(val != 1) { weaknesses[val].push(formatedType) }
   });
 
   const noneString = ' --';
-  const output = 'Super Weak:' + (weaknesses['weak+'].length ? weaknesses['weak+'] : noneString) + ' | '
-    + 'Weak:' + (weaknesses['weak'].length ? weaknesses['weak'] : noneString) + ' | '
-    + 'Resists:' + (weaknesses['resist'].length ? weaknesses['resist'] : noneString) + ' | '
-    + 'Super Resists:' + (weaknesses['resist+'].length ? weaknesses['resist+'] : noneString) + ' | '
-    + 'Immune:' + (weaknesses['immune'].length ? weaknesses['immune'] : noneString);
+  const output = 'Super Weak:' + (weaknesses[4].length ? weaknesses[4] : noneString) + ' | '
+    + 'Weak:' + (weaknesses[2].length ? weaknesses[2] : noneString) + ' | '
+    + 'Resists:' + (weaknesses[0.5].length ? weaknesses[0.5] : noneString) + ' | '
+    + 'Super Resists:' + (weaknesses[0.25].length ? weaknesses[0.25] : noneString) + ' | '
+    + 'Immune:' + (weaknesses[0].length ? weaknesses[0] : noneString);
 
   output;
 } catch(e) {
