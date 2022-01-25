@@ -393,7 +393,7 @@ const weaknesses = { 'weak': [], 'weak+': [], 'resist': [], 'resist+': [], 'immu
 
 try {
   if (!typing) throw new Error('Give valid typings. Examples: \'fighting\' or \'steel/dragon\'.');
-  const parsedInput = typing.toLowerCase().replace('%2f', '/').split('/');
+  const parsedInput = typing.toLowerCase().replaceAll('%2f', '/').split('/');
   if (parsedInput.length > 2) throw new Error('Too many typings!');
   const typeOne = parsedInput[0];
   const typeTwo = parsedInput.length >= 2 ? parsedInput[1] : 'null';
